@@ -22,25 +22,24 @@ public class Board extends JPanel {
     private OnScoreChangedListener onScoreChangedListener;
     private OnGameOverListener onGameOverListener;
 
+    private boolean firstPressInTick = true;
+
     public Board(OnScoreChangedListener onScoreChangedListener, OnGameOverListener onGameOverListener) {
         this.onScoreChangedListener = onScoreChangedListener;
         this.onGameOverListener = onGameOverListener;
 
-        snake = new Snake();
-        snake.body.add(new DirectedPosition(new Position(1, 2), Direction.UP));
-        snake.body.add(new DirectedPosition(new Position(1, 3), Direction.UP));
+        snake = new Snake(10, 10, 1);
 
-        food = new Food(10, 10);
+        food = new Food(10, 20);
 
         timer = new Timer(100, new TickListener());
-        this.setPreferredSize(new Dimension(getBoardWidth(), getBoardHeight()));
-        this.setBorder(new EmptyBorder(margin, margin, margin, margin));
 
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
                 .addKeyEventDispatcher(keyEvent -> {
                     System.out.println("Got key event!");
 
-                    if (keyEvent.getID() == KeyEvent.KEY_PRESSED) {
+                    if (keyEvent.getID() == KeyEvent.KEY_PRESSED && firstPressInTick) {
+                        firstPressInTick = false;
                         Direction turnTo = getKeyDirection(keyEvent.getKeyCode());
                         if (turnTo != null) {
                             snake.setHeading(turnTo);
@@ -53,6 +52,8 @@ public class Board extends JPanel {
         timer.start();
 
         // UI
+        this.setPreferredSize(new Dimension(getBoardWidth(), getBoardHeight()));
+        this.setSize(new Dimension(getBoardWidth(), getBoardHeight()));
         this.setBackground(Color.black);
     }
 
@@ -86,7 +87,7 @@ public class Board extends JPanel {
         if (food.isAt(snake.getHead())) {
             food = Food.spawn(snake.getBodyPositions());
             snake.appendSnake();
-            onScoreChangedListener.onScoreChanged(snake.body.size() - 2);
+            onScoreChangedListener.onScoreChanged(snake.body.size() - 1);
         }
 
         g.setColor(new Color(222, 222, 222));
@@ -110,12 +111,23 @@ public class Board extends JPanel {
 
             if (snake.body.stream().filter(part -> part.isAt(snake.getHead())).count() > 1) {
                 onGameOverListener.onGameOver();
+                timer.stop();
             } else {
                 snake.move();
             }
 
             repaint();
+
+            firstPressInTick = true;
         }
+    }
+
+    public void reset() {
+        timer.stop();
+
+        snake = new Snake(10, 10, 1);
+
+        timer.start();
     }
 
     public interface OnScoreChangedListener {

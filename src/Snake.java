@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Snake implements Drawable {
@@ -8,9 +9,15 @@ public class Snake implements Drawable {
     private Direction heading;
     public List<DirectedPosition> body;
 
-    public Snake() {
-        heading = Direction.UP;
+    public Snake(int x, int y, int length) {
+        heading = Direction.values()[new Random().nextInt(4)];
         body = new ArrayList<>();
+
+        Position position = new Position(x, y);
+        for (int i = 0; i < length; i++) {
+            body.add(new DirectedPosition(position, heading));
+            position = position.translate(heading.inverse());
+        }
     }
 
     List<Position> getBodyPositions() {

@@ -4,40 +4,40 @@ import java.awt.*;
 
 public class Game extends JPanel {
 
+    private JLayeredPane layeredPane;
+
     JLabel scoreLabel;
     JSlider cellSizeSlider;
 
     Board board;
+    GameOver gameOver;
 
     int margin = 50;
 
     public Game() {
-        board = new Board(score -> scoreLabel.setText(Integer.toString(score)), () -> {
-
-        });
-
-        JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(margin, margin, margin, margin));
-
         scoreLabel = new JLabel("0");
-        cellSizeSlider = new JSlider(JSlider.VERTICAL, 15, 30, 20);
-        cellSizeSlider.addChangeListener(e -> {
-            Board.cellSize = cellSizeSlider.getValue();
-            board.setPreferredSize(new Dimension(Board.getBoardWidth(), Board.getBoardHeight()));
-            board.setSize(new Dimension(Board.getBoardWidth(), Board.getBoardHeight()));
 
-            panel.setPreferredSize(new Dimension(
-                    Board.getBoardWidth() + 2 * margin,
-                    Board.getBoardHeight() + 2 * margin));
-            panel.setSize(new Dimension(
-                    Board.getBoardWidth() + 2 * margin,
-                    Board.getBoardHeight() + 2 * margin));
+        layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(Board.getBoardWidth(), Board.getBoardHeight()));
+
+        board = new Board(score -> scoreLabel.setText(Integer.toString(score)), new OnGameOverListener());
+        gameOver = new GameOver(() -> {
+            board.reset();
+            layeredPane.remove(gameOver);
+            scoreLabel.setText("0");
         });
 
-        panel.add(cellSizeSlider);
-        panel.add(scoreLabel);
-        panel.add(board);
+        layeredPane.add(board, JLayeredPane.DEFAULT_LAYER);
 
-        this.add(panel);
+        this.setLayout(new BorderLayout());
+        this.add(layeredPane, BorderLayout.CENTER);
+        this.add(scoreLabel, BorderLayout.NORTH);
+    }
+
+    class OnGameOverListener implements Board.OnGameOverListener {
+        @Override
+        public void onGameOver() {
+            layeredPane.add(gameOver, JLayeredPane.POPUP_LAYER);
+        }
     }
 }
