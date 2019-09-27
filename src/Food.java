@@ -1,27 +1,22 @@
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
 
 public class Food extends Position implements Drawable {
 
     Color color = new Color(242, 185, 27);
 
-    public static Food spawn(List<Position> unavailable) {
-        do {
-            int x = new Random().nextInt(Board.cols - 1);
-            int y = new Random().nextInt(Board.rows - 1);
-
-            final Food food = new Food(x, y);
-            if (!unavailable.stream().anyMatch(pos -> pos.isAt(food))) {
-                return food;
-            }
-        } while (true);
+    public static Food spawn(List<Position> excluded) {
+        return new Food(Position.spawn(excluded));
     }
 
     public Food(int x, int y) {
         super(x, y);
     }
 
+    public Food(Position position) {
+        super(position);
+    }
+    
     @Override
     public void draw(Graphics g) {
         Color drawColor = g.getColor();

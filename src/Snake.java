@@ -9,11 +9,14 @@ public class Snake implements Drawable {
     private Direction heading;
     public List<DirectedPosition> body;
 
-    public Snake(int x, int y, int length) {
-        heading = Direction.values()[new Random().nextInt(4)];
-        body = new ArrayList<>();
+    public Snake() {
+        this(Position.spawn(new ArrayList<>()), 1, Direction.values()[new Random().nextInt(4)]);
+    }
 
-        Position position = new Position(x, y);
+    public Snake(Position position, int length, Direction heading) {
+        this.heading = heading;
+        this.body = new ArrayList<>();
+
         for (int i = 0; i < length; i++) {
             body.add(new DirectedPosition(position, heading));
             position = position.translate(heading.inverse());

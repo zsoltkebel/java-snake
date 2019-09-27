@@ -1,6 +1,21 @@
+import java.util.List;
+import java.util.Random;
+
 public class Position {
 
     private int x, y;
+
+    public static Position spawn(List<Position> excluded) {
+        do {
+            int x = new Random().nextInt(Board.cols - 1);
+            int y = new Random().nextInt(Board.rows - 1);
+
+            final Position position = new Position(x, y);
+            if (excluded.stream().noneMatch(pos -> pos.isAt(position))) {
+                return position;
+            }
+        } while (true);
+    }
 
     public Position() {
 

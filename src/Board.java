@@ -28,7 +28,7 @@ public class Board extends JPanel {
         this.onScoreChangedListener = onScoreChangedListener;
         this.onGameOverListener = onGameOverListener;
 
-        snake = new Snake(10, 10, 1);
+        snake = new Snake();
 
         food = new Food(10, 20);
 
@@ -85,8 +85,8 @@ public class Board extends JPanel {
         super.paintComponent(g);
 
         if (food.isAt(snake.getHead())) {
-            food = Food.spawn(snake.getBodyPositions());
             snake.appendSnake();
+            food = Food.spawn(snake.getBodyPositions());
             onScoreChangedListener.onScoreChanged(snake.body.size() - 1);
         }
 
@@ -125,7 +125,7 @@ public class Board extends JPanel {
     public void reset() {
         timer.stop();
 
-        snake = new Snake(10, 10, 1);
+        snake = new Snake();
 
         timer.start();
     }
