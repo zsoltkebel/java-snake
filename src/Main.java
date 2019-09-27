@@ -1,3 +1,5 @@
+import ui.Game;
+
 import javax.swing.*;
 
 public class Main {

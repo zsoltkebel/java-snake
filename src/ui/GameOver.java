@@ -1,3 +1,5 @@
+package ui;
+
 import ui.Board;
 
 import javax.swing.*;
@@ -20,7 +22,7 @@ public class GameOver extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(new Color(255, 255, 255, 0));
 
-        JLabel title = new JLabel("Game Over");
+        JLabel title = new JLabel("ui.Game Over");
         title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 26));
         title.setForeground(Color.BLUE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);

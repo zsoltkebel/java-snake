@@ -1,3 +1,5 @@
+package ui;
+
 import ui.Board;
 
 import javax.swing.*;
