@@ -1,6 +1,6 @@
-import java.awt.*;
+package model;
 
-public class DirectedPosition extends Position implements Drawable {
+public class DirectedPosition extends Position {
 
     private Direction direction;
 
@@ -26,19 +26,5 @@ public class DirectedPosition extends Position implements Drawable {
         Position newPos = super.translate(direction);
 
         return new DirectedPosition(newPos, direction);
-    }
-
-    @Override
-    public void draw(Graphics g) {
-        Color drawColor = g.getColor();
-
-        g.setColor(Color.GREEN);
-        int x = getX() * Board.cellSize + Board.cellPadding;
-        int y = getY() * Board.cellSize + Board.cellPadding;
-        int rectSize = Board.cellSize - 2 * Board.cellPadding;
-
-        g.fillRect(x, y, rectSize, rectSize);
-
-        g.setColor(drawColor);
     }
 }

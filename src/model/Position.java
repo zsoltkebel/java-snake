@@ -1,3 +1,7 @@
+package model;
+
+import ui.Board;
+
 import java.util.List;
 import java.util.Random;
 
@@ -18,7 +22,8 @@ public class Position {
     }
 
     public Position() {
-
+        this.x = 0;
+        this.y = 0;
     }
 
     public Position(int x, int y) {
@@ -65,7 +70,11 @@ public class Position {
         return new Position(x, y);
     }
 
-    boolean isAt(Position otherPos) {
+    public Position copy() {
+        return new Position(this);
+    }
+
+    public boolean isAt(Position otherPos) {
         return this.x == otherPos.x && this.y == otherPos.y;
     }
 

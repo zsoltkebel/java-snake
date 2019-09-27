@@ -1,7 +1,7 @@
+import ui.Board;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GameOver extends JPanel {
 
@@ -15,15 +15,25 @@ public class GameOver extends JPanel {
         this.setBackground(new Color(255, 255, 255, 125));
         this.setLayout(new GridBagLayout());
 
-        JLabel title = new JLabel("Game Over");
-        title.setForeground(Color.BLUE);
+        JPanel panel = new JPanel();
 
-        this.add(title);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(new Color(255, 255, 255, 0));
+
+        JLabel title = new JLabel("Game Over");
+        title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 26));
+        title.setForeground(Color.BLUE);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(title);
 
         JButton newGame = new JButton("Restart");
         newGame.addActionListener(actionEvent -> onRestartListener.onRestart());
+        newGame.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        this.add(newGame);
+        panel.add(newGame);
+
+        this.add(panel);
     }
 
     public interface OnRestartListener {

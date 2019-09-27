@@ -1,10 +1,14 @@
+package ui;
+
+import model.Direction;
+import model.Food;
+import model.Snake;
+
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 public class Board extends JPanel {
 
@@ -84,7 +88,7 @@ public class Board extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (food.isAt(snake.getHead())) {
+        if (food.getPosition().isAt(snake.getHead())) {
             snake.appendSnake();
             food = Food.spawn(snake.getBodyPositions());
             onScoreChangedListener.onScoreChanged(snake.body.size() - 1);

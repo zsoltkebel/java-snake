@@ -1,3 +1,7 @@
+package model;
+
+import ui.Board;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,26 +27,26 @@ public class Snake implements Drawable {
         }
     }
 
-    List<Position> getBodyPositions() {
+    public List<Position> getBodyPositions() {
         return body.stream().map(part -> new Position(part.getX(), part.getY())).collect(Collectors.toList());
     }
 
-    DirectedPosition getHead() {
+    public DirectedPosition getHead() {
         return body.get(0);
     }
 
-    DirectedPosition getTail() {
+    public DirectedPosition getTail() {
         return body.get(body.size() - 1);
     }
 
-    boolean setHeading(Direction heading) {
+    public boolean setHeading(Direction heading) {
         if (heading == null || heading.inverse() == this.heading) return false;
 
         this.heading = heading;
         return true;
     }
 
-    void move() {
+    public void move() {
         Direction previousHeading = getHead().getDirection();
 
         // turn head
@@ -62,7 +66,7 @@ public class Snake implements Drawable {
         return body.stream().anyMatch(part -> part.isAt(pos));
     }
 
-    void appendSnake() {
+    public void appendSnake() {
         DirectedPosition newTail =
                 new DirectedPosition(getTail().translate(getTail().getDirection().inverse()), getTail().getDirection());
 
@@ -71,6 +75,19 @@ public class Snake implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        body.forEach(part -> part.draw(g));
+        body.forEach(part -> drawBodyPart(g, part));
+    }
+
+    private void drawBodyPart(Graphics g, DirectedPosition directedPosition) {
+        Color drawColor = g.getColor();
+
+        g.setColor(Color.GREEN);
+        int x = directedPosition.getX() * Board.cellSize + Board.cellPadding;
+        int y = directedPosition.getY() * Board.cellSize + Board.cellPadding;
+        int rectSize = Board.cellSize - 2 * Board.cellPadding;
+
+        g.fillRect(x, y, rectSize, rectSize);
+
+        g.setColor(drawColor);
     }
 }
